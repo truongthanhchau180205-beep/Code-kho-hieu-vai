@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển Khoản Ngân Hàng - TechStore</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .bank-transfer-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 0;
+        }
+
+        .bank-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .bank-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .bank-header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .bank-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .bank-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .bank-main {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .bank-sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #667eea;
+        }
+
+        .bank-selection {
+            margin-bottom: 40px;
+        }
+
+        .bank-options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .bank-option {
+            border: 2px solid #e1e5e9;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .bank-option:hover {
+            border-color: #667eea;
+            background: #f8fafc;
+        }
+
+        .bank-option.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .bank-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bank-logo {
+            width: 60px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #f1f5f9;
+            font-weight: 700;
+            color: #667eea;
+            font-size: 0.9rem;
+            border: 2px solid #e1e5e9;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Image logo styling */
+        .bank-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 2px;
+            border-radius: 6px;
+        }
+
+        /* Text logo styling when no image */
+        .bank-logo:not(:has(img)) {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Fallback for browsers that don't support :has() */
+        .bank-logo.text-logo {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .bank-logo.image-logo {
+            background: white;
+            border-color: #ddd;
+        }
+
+        /* Specific bank logo styles for text logos */
+        .bank-option[data-bank="techcombank"] .bank-logo.text-logo {
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            border-color: #0066cc;
+            color: white;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .bank-option[data-bank="vietcombank"] .bank-logo.text-logo {
+            background: linear-gradient(135deg, #007b33 0%, #005522 100%);
+            color: white;
+            border-color: #007b33;
+            font-size: 0.8rem;
+            letter-spacing: 0.3px;
+        }
+
+        .bank-option[data-bank="bidv"] .bank-logo.text-logo {
+            background: linear-gradient(135deg, #ff6600 0%, #cc5200 100%);
+            color: white;
+            border-color: #ff6600;
+            font-size: 0.75rem;
+            letter-spacing: 0.8px;
+            font-weight: 800;
+        }
+
+        /* Specific bank logo styles for image logos */
+        .bank-option[data-bank="techcombank"] .bank-logo.image-logo {
+            background: white;
+            border-color: #0066cc;
+        }
+
+        .bank-option[data-bank="vietcombank"] .bank-logo.image-logo {
+            background: white;
+            border-color: #007b33;
+        }
+
+        .bank-option[data-bank="bidv"] .bank-logo.image-logo {
+            background: white;
+            border-color: #ff6600;
+        }
+
+        .bank-option:hover .bank-logo {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .bank-option.active .bank-logo {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Logo text styling */
+        .bank-logo {
+            position: relative;
+        }
+
+        .bank-logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .bank-option:hover .bank-logo::before {
+            opacity: 1;
+        }
+
+        /* Bank specific gradients and colors */
+        .bank-option[data-bank="techcombank"] .bank-logo {
+            background: linear-gradient(135deg, #0066cc 0%, #003d7a 100%);
+            color: white;
+            border-color: #0066cc;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .bank-option[data-bank="vietcombank"] .bank-logo {
+            background: linear-gradient(135deg, #007b33 0%, #004d20 100%);
+            color: white;
+            border-color: #007b33;
+            font-size: 0.8rem;
+            letter-spacing: 0.3px;
+        }
+
+        .bank-option[data-bank="bidv"] .bank-logo {
+            background: linear-gradient(135deg, #ff6600 0%, #cc4400 100%);
+            color: white;
+            border-color: #ff6600;
+            font-size: 0.75rem;
+            letter-spacing: 0.8px;
+            font-weight: 800;
+        }
+
+        /* Active state enhancements */
+        .bank-option.active[data-bank="techcombank"] .bank-logo {
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+        }
+
+        .bank-option.active[data-bank="vietcombank"] .bank-logo {
+            box-shadow: 0 6px 20px rgba(0, 123, 51, 0.4);
+        }
+
+        .bank-option.active[data-bank="bidv"] .bank-logo {
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.4);
+        }
+
+        .bank-details h4 {
+            margin: 0 0 5px;
+            color: #1a1a1a;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .bank-details p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .bank-check {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #e1e5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .bank-option.active .bank-check {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .transfer-details {
+            margin-bottom: 40px;
+        }
+
+        .detail-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #1a1a1a;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #5a67d8;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .qr-container {
+            position: relative;
+            display: inline-block;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .qr-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .qr-image.loaded {
+            opacity: 1;
+        }
+
+        .qr-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            color: #667eea;
+        }
+
+        .qr-loading.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .qr-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .qr-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qr-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .order-summary {
+            margin-bottom: 30px;
+        }
+
+        .order-summary h3 {
+            margin: 0 0 20px;
+            color: #1a1a1a;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #667eea;
+            padding-top: 20px;
+            margin-top: 10px;
+            border-top: 2px solid #f1f5f9;
+        }
+
+        .instructions {
+            background: #fef7e7;
+            border: 1px solid #fbbf24;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .instructions h4 {
+            margin: 0 0 15px;
+            color: #92400e;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instructions ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #92400e;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .confirm-section {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-back {
+            flex: 1;
+            padding: 15px;
+            background: #f1f5f9;
+            color: #666;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-back:hover {
+            background: #e1e5e9;
+        }
+
+        .btn-confirm {
+            flex: 2;
+            padding: 15px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .bank-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .bank-sidebar {
+                position: static;
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .bank-wrapper {
+                padding: 0 15px;
+            }
+
+            .bank-main,
+            .bank-sidebar {
+                padding: 25px 20px;
+            }
+
+            .bank-header h1 {
+                font-size: 2rem;
+            }
+
+            .qr-image {
+                width: 160px;
+                height: 160px;
+            }
+
+            .qr-actions {
+                flex-direction: column;
+            }
+
+            .confirm-section {
+                flex-direction: column;
+            }
+
+            /* Mobile bank logo adjustments */
+            .bank-logo {
+                width: 50px;
+                height: 38px;
+                font-size: 0.75rem;
+            }
+
+            .bank-option[data-bank="techcombank"] .bank-logo {
+                font-size: 0.7rem;
+            }
+
+            .bank-option[data-bank="vietcombank"] .bank-logo {
+                font-size: 0.65rem;
+            }
+
+            .bank-option[data-bank="bidv"] .bank-logo {
+                font-size: 0.6rem;
+            }
+
+            .bank-info {
+                gap: 12px;
+            }
+
+            .bank-details h4 {
+                font-size: 1rem;
+            }
+
+            .bank-details p {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Load shared cart functionality -->
+    <script src="js/shared.js"></script>
+    <script src="js/payment.js"></script>
+
+    <div class="bank-transfer-container">
+        <div class="bank-wrapper">
+            <div class="bank-header">
+                <a href="checkout.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Quay lại thanh toán
+                </a>
+                <h1><i class="fas fa-university"></i> Chuyển Khoản Ngân Hàng</h1>
+                <p>Vui lòng chuyển khoản theo thông tin bên dưới để hoàn tất đơn hàng</p>
+            </div>
+
+            <div class="bank-content">
+                <div class="bank-main">
+                    <!-- Bank Selection -->
+                    <div class="bank-selection">
+                        <h2 class="section-title">
+                            <i class="fas fa-building-columns"></i>
+                            Chọn ngân hàng
+                        </h2>
+
+                        <div class="bank-options">
+                            <div class="bank-option active" data-bank="techcombank">
+                                <div class="bank-info">
+                                    <div class="bank-logo image-logo">
+                                        <img src="images/logos/mbbank-logo.png" alt="MBBank">
+                                    </div>
+                                    <div class="bank-details">
+                                        <h4>MBBank</h4>
+                                        <p>Ngân hàng TMCP Quân đội</p>
+                                    </div>
+                                </div>
+                                <div class="bank-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+
+                            <div class="bank-option" data-bank="vietcombank">
+                                <div class="bank-info">
+                                    <div class="bank-logo image-logo">
+                                        <img src="images/logos/tpbank-logo.png" alt="TPBank">
+                                    </div>
+                                    <div class="bank-details">
+                                        <h4>TPBank</h4>
+                                        <p>Ngân hàng TMCP Tiên Phong</p>
+                                    </div>
+                                </div>
+                                <div class="bank-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transfer Details -->
+                    <div class="transfer-details">
+                        <h2 class="section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Thông tin chuyển khoản
+                        </h2>
+
+                        <div class="detail-card">
+                            <div class="detail-row">
+                                <span class="detail-label">Tên ngân hàng:</span>
+                                <span class="detail-value" id="bankName">Techcombank</span>
+                            </div>
+
+                            <div class="detail-row">
+                                <span class="detail-label">Số tài khoản:</span>
+                                <span class="detail-value">
+                                    <span id="accountNumber">19036969696969</span>
+                                    <button class="copy-btn" onclick="copyToClipboard('19036969696969')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </span>
+                            </div>
+
+                            <div class="detail-row">
+                                <span class="detail-label">Chủ tài khoản:</span>
+                                <span class="detail-value" id="accountName">CONG TY TNHH TECHSTORE</span>
+                            </div>
+
+                            <div class="detail-row">
+                                <span class="detail-label">Số tiền:</span>
+                                <span class="detail-value">
+                                    <span id="transferAmount">0đ</span>
+                                    <button class="copy-btn" onclick="copyTransferAmount()">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </span>
+                            </div>
+
+                            <div class="detail-row">
+                                <span class="detail-label">Nội dung:</span>
+                                <span class="detail-value">
+                                    <span id="transferContent">Thanh toan don hang TechStore</span>
+                                    <button class="copy-btn" onclick="copyTransferContent()">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QR Code -->
+                    <div class="qr-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-qrcode"></i>
+                            Quét mã QR để chuyển khoản
+                        </h2>
+
+                        <div class="qr-container">
+                            <img id="qrCodeImage" class="qr-image" alt="QR Code">
+                            <div id="qrLoading" class="qr-loading">
+                                <div class="spinner"></div>
+                                <p>Đang tạo mã QR...</p>
+                            </div>
+                        </div>
+
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">
+                            Quét mã QR bằng app ngân hàng để chuyển khoản nhanh chóng
+                        </p>
+
+                        <div class="qr-actions">
+                            <button class="qr-btn" onclick="downloadQRCode()">
+                                <i class="fas fa-download"></i>
+                                Tải xuống QR
+                            </button>
+                            <button class="qr-btn" onclick="refreshQRCode()">
+                                <i class="fas fa-refresh"></i>
+                                Làm mới QR
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Instructions -->
+                    <div class="instructions">
+                        <h4>
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Lưu ý quan trọng
+                        </h4>
+                        <ul>
+                            <li>Vui lòng chuyển khoản <strong>đúng số tiền</strong> và <strong>đúng nội dung</strong>
+                            </li>
+                            <li>Đơn hàng sẽ được xử lý sau khi chúng tôi nhận được thanh toán (trong vòng 24h)</li>
+                            <li>Nếu gặp sự cố, vui lòng liên hệ hotline: <strong>1900-1234</strong></li>
+                            <li>Lưu lại ảnh chụp màn hình hoặc biên lai chuyển khoản để đối chiếu</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bank-sidebar">
+                    <!-- Order Summary -->
+                    <div class="order-summary">
+                        <h3>Thông tin đơn hàng</h3>
+                        <div class="summary-item">
+                            <span>Mã đơn hàng:</span>
+                            <span id="orderIdDisplay">...</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Số lượng sản phẩm:</span>
+                            <span id="itemCount">0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Tạm tính:</span>
+                            <span id="subtotalAmount">0đ</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Phí vận chuyển:</span>
+                            <span id="deliveryFeeAmount">0đ</span>
+                        </div>
+                        <div class="summary-item" id="discountRow" style="display: none;">
+                            <span>Giảm giá:</span>
+                            <span id="discountAmount">-0đ</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Tổng cộng:</span>
+                            <span id="totalAmount">0đ</span>
+                        </div>
+                    </div>
+
+                    <div class="confirm-section">
+                        <a href="checkout.html" class="btn-back">
+                            <i class="fas fa-arrow-left"></i>
+                            Quay lại
+                        </a>
+                        <button class="btn-confirm" onclick="confirmTransfer()">
+                            <i class="fas fa-check-circle"></i>
+                            Tôi đã chuyển khoản
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let orderData = {};
+        let currentBank = 'techcombank';
+
+        // Bank information
+        const banks = {
+            techcombank: {
+                name: 'MBBank',
+                code: '970422',
+                account: '0915232119',
+                owner: 'NGUYEN DOAN DUY KHANH'
+            },
+            vietcombank: {
+                name: 'TPBank',
+                code: '970423',
+                account: '32120049999',
+                owner: 'NGUYEN DOAN DUY KHANH'
+            }
+        };
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+
+        // Load order data from URL or localStorage
+        function loadOrderData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedData = urlParams.get('data');
+
+            if (encodedData) {
+                try {
+                    orderData = JSON.parse(decodeURIComponent(encodedData));
+                } catch (e) {
+                    console.error('Failed to parse order data:', e);
+                    alert('Dữ liệu đơn hàng không hợp lệ!');
+                    window.location.href = 'checkout.html';
+                    return;
+                }
+            } else {
+                alert('Không tìm thấy thông tin đơn hàng!');
+                window.location.href = 'checkout.html';
+                return;
+            }
+
+            renderBankTransfer();
+        }
+
+        // Render bank transfer page
+        function renderBankTransfer() {
+            updateOrderSummary();
+            updateBankDetails();
+            generateQRCode();
+            setupEventListeners();
+        }
+
+        // Update order summary
+        function updateOrderSummary() {
+            const itemCount = orderData.items ? orderData.items.reduce((sum, item) => sum + item.quantity, 0) : 0;
+            const subtotal = orderData.items ? orderData.items.reduce((sum, item) => sum + (item.price * item.quantity), 0) : 0;
+            const discount = orderData.promoCode ? calculateDiscount(subtotal, orderData.promoCode) : 0;
+
+            document.getElementById('orderIdDisplay').textContent = orderData.orderId || 'TS' + Date.now();
+            document.getElementById('itemCount').textContent = itemCount;
+            document.getElementById('subtotalAmount').textContent = formatCurrency(subtotal);
+            document.getElementById('deliveryFeeAmount').textContent = formatCurrency(orderData.deliveryFee || 50000);
+            document.getElementById('totalAmount').textContent = formatCurrency(orderData.total || 0);
+            document.getElementById('transferAmount').textContent = formatCurrency(orderData.total || 0);
+
+            // Update transfer content
+            const transferContent = `${orderData.orderId || 'TS' + Date.now()} ${orderData.customer?.name || 'KhachHang'}`;
+            document.getElementById('transferContent').textContent = transferContent;
+
+            if (discount > 0) {
+                document.getElementById('discountAmount').textContent = `-${formatCurrency(discount)}`;
+                document.getElementById('discountRow').style.display = 'flex';
+            }
+        }
+
+        // Calculate discount
+        function calculateDiscount(subtotal, promoCode) {
+            if (promoCode.type === 'percent') {
+                return subtotal * (promoCode.discount / 100);
+            } else {
+                return promoCode.discount;
+            }
+        }
+
+        // Update bank details
+        function updateBankDetails() {
+            const bank = banks[currentBank];
+            document.getElementById('bankName').textContent = bank.name;
+            document.getElementById('accountNumber').textContent = bank.account;
+            document.getElementById('accountName').textContent = bank.owner;
+
+            // Update copy button actions
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons[0].onclick = () => copyToClipboard(bank.account);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.querySelectorAll('.bank-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    document.querySelectorAll('.bank-option').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    currentBank = this.dataset.bank;
+                    updateBankDetails();
+                    generateQRCode();
+                });
+            });
+        }
+
+        // Generate QR Code
+        function generateQRCode() {
+            const qrImage = document.getElementById('qrCodeImage');
+            const qrLoading = document.getElementById('qrLoading');
+
+            // Reset QR display
+            qrImage.classList.remove('loaded');
+            qrLoading.classList.remove('hidden');
+
+            const bank = banks[currentBank];
+            const bankInfo = {
+                bankCode: bank.code,
+                accountNumber: bank.account,
+                accountName: bank.owner,
+                amount: orderData.total || 0,
+                description: `${orderData.orderId || 'TS' + Date.now()} ${orderData.customer?.name || 'KhachHang'}`
+            };
+
+            // Try multiple QR generation services
+            const qrServices = [
+                `https://img.vietqr.io/image/${bankInfo.bankCode}-${bankInfo.accountNumber}-compact2.jpg?amount=${bankInfo.amount}&addInfo=${encodeURIComponent(bankInfo.description)}&accountName=${encodeURIComponent(bankInfo.accountName)}`,
+                `https://quickchart.io/qr?text=${encodeURIComponent(createQRContent(bankInfo))}&size=200&format=png`,
+                `https://api.qrserver.com/v1/create-qr-code/?size=200x200&format=png&data=${encodeURIComponent(createQRContent(bankInfo))}`
+            ];
+
+            tryLoadQR(qrServices, 0, qrImage, qrLoading);
+        }
+
+        // Create QR content
+        function createQRContent(bankInfo) {
+            return `BANK:${bankInfo.bankCode}|ACC:${bankInfo.accountNumber}|AMOUNT:${bankInfo.amount}|DESC:${bankInfo.description}|NAME:${bankInfo.accountName}`;
+        }
+
+        // Try loading QR from different services
+        function tryLoadQR(services, index, qrImage, qrLoading) {
+            if (index >= services.length) {
+                // All services failed
+                qrLoading.innerHTML = `
+                    <i class="fas fa-qrcode" style="font-size: 2rem; color: #ccc; margin-bottom: 10px;"></i>
+                    <p style="color: #999; text-align: center;">Không thể tạo mã QR<br>Vui lòng chuyển khoản thủ công</p>
+                    <button onclick="generateQRCode()" style="margin-top: 10px; padding: 8px 15px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                        <i class="fas fa-refresh"></i> Thử lại
+                    </button>
+                `;
+                return;
+            }
+
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+
+            img.onload = function () {
+                qrImage.src = img.src;
+                qrImage.classList.add('loaded');
+                qrLoading.classList.add('hidden');
+            };
+
+            img.onerror = function () {
+                tryLoadQR(services, index + 1, qrImage, qrLoading);
+            };
+
+            // Add timeout for slow services
+            setTimeout(() => {
+                if (!qrImage.classList.contains('loaded')) {
+                    img.src = '';
+                    tryLoadQR(services, index + 1, qrImage, qrLoading);
+                }
+            }, 5000);
+
+            img.src = services[index];
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Đã sao chép vào clipboard!', 'success');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('Đã sao chép vào clipboard!', 'success');
+            });
+        }
+
+        // Copy transfer amount
+        function copyTransferAmount() {
+            const amount = orderData.total || 0;
+            copyToClipboard(amount.toString());
+        }
+
+        // Copy transfer content
+        function copyTransferContent() {
+            const content = `${orderData.orderId || 'TS' + Date.now()} ${orderData.customer?.name || 'KhachHang'}`;
+            copyToClipboard(content);
+        }
+
+        // Download QR Code
+        function downloadQRCode() {
+            const qrImage = document.getElementById('qrCodeImage');
+            if (qrImage && qrImage.src && qrImage.classList.contains('loaded')) {
+                const link = document.createElement('a');
+                link.download = `QR_ChuyenKhoan_${orderData.orderId || 'TechStore'}.png`;
+                link.href = qrImage.src;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                showNotification('Đã tải xuống mã QR!', 'success');
+            } else {
+                showNotification('Chưa có mã QR để tải xuống!', 'error');
+            }
+        }
+
+        // Refresh QR Code
+        function refreshQRCode() {
+            generateQRCode();
+            showNotification('Đang làm mới mã QR...', 'success');
+        }
+
+        // Confirm transfer
+        function confirmTransfer() {
+            // Save order to history
+            let orderHistory = JSON.parse(localStorage.getItem('order_history') || '[]');
+            orderHistory.unshift(orderData);
+            localStorage.setItem('order_history', JSON.stringify(orderHistory));
+
+            // Clear cart
+            TechStoreCart.clearCart();
+
+            // Redirect to success page
+            window.location.href = `order-success.html?orderId=${orderData.orderId}&method=bank`;
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const existingNotifications = document.querySelectorAll('.bank-notification');
+            existingNotifications.forEach(notification => notification.remove());
+
+            const notification = document.createElement('div');
+            notification.className = `bank-notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : '#ef4444'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                max-width: 350px;
+            `;
+
+            const contentStyle = `
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 500;
+            `;
+            notification.querySelector('.notification-content').style.cssText = contentStyle;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            loadOrderData();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login - TechStore</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .debug {
+            background: #e2e3e5;
+            color: #383d41;
+            border: 1px solid #d6d8db;
+            margin-top: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Test Authentication System</h1>
+        
+        <div class="form-group">
+            <label>Thông tin đăng nhập:</label>
+            <p><strong>Email:</strong> admin@gmail.com</p>
+            <p><strong>Password:</strong> 12345678@</p>
+        </div>
+
+        <form id="testForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="admin@gmail.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" value="12345678@">
+            </div>
+            
+            <button type="submit">Test Login</button>
+        </form>
+
+        <div id="result" class="result"></div>
+        <div id="debug" class="result debug" style="display: block;"></div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        const debugDiv = document.getElementById('debug');
+        const resultDiv = document.getElementById('result');
+
+        function log(message) {
+            debugDiv.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+        }
+
+        // Test the auth system on load
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Page loaded, testing auth system...');
+            log('TechStoreAuth available: ' + (typeof TechStoreAuth !== 'undefined'));
+            
+            if (typeof TechStoreAuth !== 'undefined') {
+                log('Users in system: ' + JSON.stringify(Object.keys(TechStoreAuth.users)));
+                log('Admin user: ' + JSON.stringify(TechStoreAuth.users.admin));
+            }
+        });
+
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            log('Attempting login with: ' + email + ' / ' + password);
+            
+            const result = TechStoreAuth.login(email, password);
+            log('Login result: ' + JSON.stringify(result));
+            
+            resultDiv.style.display = 'block';
+            if (result.success) {
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = '<strong>✅ Đăng nhập thành công!</strong><br>User: ' + JSON.stringify(result.user);
+                
+                log('Current user after login: ' + JSON.stringify(TechStoreAuth.getCurrentUser()));
+                log('Is logged in: ' + TechStoreAuth.isLoggedIn());
+            } else {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<strong>❌ Đăng nhập thất bại!</strong><br>' + result.message;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng - TechStore</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Cart Page Specific Styles */
+        body {
+            background-color: #f8fafc;
+            padding-top: 80px;
+        }
+
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .cart-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .cart-header h1 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cart-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .cart-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .cart-items {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e1e5e9;
+        }
+
+        .cart-items h2 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto auto auto;
+            gap: 20px;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item:hover {
+            background: #f8fafc;
+            margin: 0 -20px;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid #f1f5f9;
+        }
+
+        .item-details h3 {
+            font-size: 1.1rem;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .item-details p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .item-specs {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .spec-tag {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .original-price {
+            font-size: 0.9rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-bottom: 4px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8fafc;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .quantity-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .remove-btn {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .remove-btn:hover {
+            background: #dc2626;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .cart-summary {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e1e5e9;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .cart-summary h2 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: #1a1a1a;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px 0;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid #f1f5f9;
+            margin-top: 20px;
+            padding-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .summary-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .discount-value {
+            color: #10b981;
+        }
+
+        .promo-code {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px dashed #e1e5e9;
+        }
+
+        .promo-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .promo-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .promo-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .promo-btn {
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .promo-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .checkout-btn:active {
+            transform: translateY(0);
+        }
+
+        .continue-shopping {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .continue-shopping:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-cart-icon {
+            font-size: 4rem;
+            color: #cbd5e0;
+            margin-bottom: 20px;
+        }
+
+        .empty-cart h2 {
+            font-size: 1.8rem;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .empty-cart p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #10b981;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .delivery-info {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .delivery-info h3 {
+            color: #0369a1;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .delivery-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .delivery-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .delivery-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cart-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .cart-item {
+                grid-template-columns: 80px 1fr auto;
+                gap: 15px;
+            }
+
+            .item-price,
+            .quantity-controls {
+                grid-column: 2 / -1;
+                justify-self: end;
+                margin-top: 10px;
+            }
+
+            .remove-btn {
+                grid-column: 3;
+                grid-row: 1;
+            }
+
+            .item-specs {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .cart-summary {
+                position: static;
+                order: -1;
+            }
+
+            .cart-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cart-item {
+            animation: slideIn 0.3s ease;
+        }
+
+        .quantity-updated {
+            animation: pulse 0.3s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Bank Transfer Modal Styles */
+        .bank-transfer-modal .modal-content {
+            max-width: 700px;
+        }
+
+        .bank-info {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 300px;
+            gap: 30px;
+        }
+
+        .bank-selection h4 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .bank-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bank-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .bank-option:hover {
+            border-color: #667eea;
+            background: #f8fafc;
+        }
+
+        .bank-option.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .bank-option img {
+            border-radius: 4px;
+        }
+
+        .bank-option span {
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .bank-details h4 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .info-row span {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-row strong {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #5a6fd8;
+            transform: scale(1.05);
+        }
+
+        .qr-code {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .qr-code h5 {
+            margin: 0 0 15px;
+            color: #1a1a1a;
+        }
+
+        .qr-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        .qr-container img {
+            display: none;
+        }
+
+        .qr-container img.loaded {
+            display: block;
+        }
+
+        .qr-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border: 2px dashed #e1e5e9;
+            border-radius: 8px;
+        }
+
+        .qr-loading.hidden {
+            display: none;
+        }
+
+        .qr-loading .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        .qr-loading p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .qr-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .qr-btn {
+            padding: 8px 15px;
+            background: #f1f5f9;
+            color: #667eea;
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .qr-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .bank-note {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 30px 30px;
+        }
+
+        .bank-note p {
+            margin: 0 0 10px;
+            color: #ea580c;
+            font-weight: 600;
+        }
+
+        .bank-note ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #9a3412;
+        }
+
+        .bank-note li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .bank-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .qr-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .qr-container img {
+                width: 150px !important;
+                height: 150px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>TechStore</span>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#products" class="nav-link">Sản phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Liên hệ</a>
+                    </li>
+                </ul>
+
+                <div class="nav-actions">
+                    <div class="search-box">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                    <a href="login.html" class="login-btn">Đăng nhập</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="cart-container">
+        <div class="cart-header">
+            <h1>Giỏ hàng của bạn</h1>
+            <p>Xem lại và hoàn tất đơn hàng</p>
+        </div>
+
+        <div class="cart-content" id="cartContent">
+            <!-- Cart items sẽ được render bằng JavaScript -->
+        </div>
+    </main>
+
+    <script src="js/shared.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/image-manager.js"></script>
+    <script src="js/auth-simple.js"></script>
+    <script>
+        // Initialize authentication and cart on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update navigation with auth info
+            if (window.TechStoreAuth) {
+                TechStoreAuth.updateNavigation();
+            }
+            
+            // Update cart count
+            TechStoreCart.updateCartCount();
+            
+            // Load cart items
+            loadCartItems();
+            renderCart();
+        });
+
+        // Load cart items from localStorage instead of demo data
+        let cartItems = [];
+        
+        // Initialize payment system
+        let vnpayPayment = null;
+        let bankTransfer = null;
+        let paymentAnalytics = null;
+        let orderManager = null;
+
+        // Initialize payment components
+        function initializePaymentSystem() {
+            if (window.TechStorePayment) {
+                vnpayPayment = new TechStorePayment.VNPayPayment();
+                bankTransfer = new TechStorePayment.BankTransfer();
+                paymentAnalytics = new TechStorePayment.PaymentAnalytics();
+                orderManager = new TechStorePayment.OrderManager();
+                
+                paymentAnalytics.loadFromLocalStorage();
+            }
+        }
+        
+        // Promo codes
+        const promoCodes = {
+            'WELCOME10': { discount: 10, type: 'percent', description: 'Giảm 10% cho khách hàng mới' },
+            'SAVE500K': { discount: 500000, type: 'fixed', description: 'Giảm 500.000đ cho đơn hàng từ 20 triệu' },
+            'FREESHIP': { discount: 50000, type: 'fixed', description: 'Miễn phí vận chuyển' },
+            'TECH2025': { discount: 15, type: 'percent', description: 'Giảm 15% mừng năm mới 2025' }
+        };
+
+        let currentPromo = null;
+        let deliveryFee = 50000;
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+
+        // Load cart items from localStorage
+        function loadCartItems() {
+            try {
+                const savedCart = localStorage.getItem('techstore_cart');
+                if (savedCart) {
+                    cartItems = JSON.parse(savedCart);
+                    console.log('Loaded cart items:', cartItems);
+                } else {
+                    cartItems = [];
+                    console.log('No saved cart found, starting with empty cart');
+                }
+            } catch (error) {
+                console.error('Error loading cart:', error);
+                cartItems = [];
+            }
+        }
+
+        // Save cart to localStorage
+        function saveCart() {
+            try {
+                localStorage.setItem('techstore_cart', JSON.stringify(cartItems));
+                console.log('Cart saved to localStorage');
+            } catch (error) {
+                console.error('Error saving cart:', error);
+            }
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
+        // Calculate totals
+        function calculateTotals() {
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            let discount = 0;
+            
+            if (currentPromo) {
+                if (currentPromo.type === 'percent') {
+                    discount = subtotal * (currentPromo.discount / 100);
+                } else {
+                    discount = currentPromo.discount;
+                }
+            }
+            
+            const total = subtotal - discount + deliveryFee;
+            
+            return { subtotal, discount, total };
+        }
+
+        // Render cart items
+        function renderCart() {
+            const cartContent = document.getElementById('cartContent');
+            
+            if (cartItems.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart empty-cart-icon"></i>
+                        <h2>Giỏ hàng trống</h2>
+                        <p>Bạn chưa có sản phẩm nào trong giỏ hàng</p>
+                        <a href="index.html" class="checkout-btn" style="max-width: 300px; margin: 0 auto;">
+                            <i class="fas fa-arrow-left"></i>
+                            Tiếp tục mua sắm
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            const { subtotal, discount, total } = calculateTotals();
+
+            cartContent.innerHTML = `
+                <div class="cart-items">
+                    <h2>
+                        <i class="fas fa-shopping-bag"></i>
+                        Sản phẩm (${cartItems.length})
+                    </h2>
+                    ${cartItems.map(item => `
+                        <div class="cart-item" data-id="${item.id}">
+                            <img src="${item.image}" alt="${item.name}" class="item-image" 
+                                 onerror="this.src='https://via.placeholder.com/80x80?text=No+Image'">
+                            <div class="item-details">
+                                <h3>${item.name}</h3>
+                                <p>Màu sắc: ${item.color}</p>
+                                <div class="item-specs">
+                                    <span class="spec-tag">${item.storage}</span>
+                                    <span class="spec-tag">BH ${item.warranty}</span>
+                                </div>
+                            </div>
+                            <div class="item-price">
+                                ${item.originalPrice > item.price ? `<div class="original-price">${formatCurrency(item.originalPrice)}</div>` : ''}
+                                ${formatCurrency(item.price)}
+                            </div>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)" ${item.quantity <= 1 ? 'disabled' : ''}>
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" 
+                                       onchange="setQuantity(${item.id}, this.value)" min="1" max="10">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)" ${item.quantity >= 10 ? 'disabled' : ''}>
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <button class="remove-btn" onclick="removeItem(${item.id})" title="Xóa sản phẩm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="cart-summary">
+                    <h2>Tóm tắt đơn hàng</h2>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">Tạm tính (${cartItems.reduce((sum, item) => sum + item.quantity, 0)} sản phẩm)</span>
+                        <span class="summary-value">${formatCurrency(subtotal)}</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">Phí vận chuyển</span>
+                        <span class="summary-value">${formatCurrency(deliveryFee)}</span>
+                    </div>
+                    
+                    ${discount > 0 ? `
+                        <div class="summary-row">
+                            <span class="summary-label">Giảm giá</span>
+                            <span class="summary-value discount-value">-${formatCurrency(discount)}</span>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="summary-row total">
+                        <span class="summary-label">Tổng cộng</span>
+                        <span class="summary-value">${formatCurrency(total)}</span>
+                    </div>
+
+                    <div class="promo-code">
+                        <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #1a1a1a;">
+                            <i class="fas fa-tag" style="margin-right: 8px; color: #667eea;"></i>
+                            Mã giảm giá
+                        </label>
+                        <div class="promo-input-group">
+                            <input type="text" class="promo-input" id="promoInput" 
+                                   placeholder="Nhập mã giảm giá" ${currentPromo ? `value="${Object.keys(promoCodes).find(key => promoCodes[key] === currentPromo)}"` : ''}>
+                            <button class="promo-btn" onclick="applyPromoCode()">
+                                ${currentPromo ? 'Hủy' : 'Áp dụng'}
+                            </button>
+                        </div>
+                        ${currentPromo ? `<p style="color: #10b981; margin-top: 10px; font-size: 0.9rem;"><i class="fas fa-check-circle"></i> ${currentPromo.description}</p>` : ''}
+                    </div>
+
+                    <div class="delivery-info">
+                        <h3><i class="fas fa-truck"></i> Thông tin giao hàng</h3>
+                        <div class="delivery-options">
+                            <div class="delivery-option">
+                                <label>
+                                    <input type="radio" name="delivery" value="standard" checked>
+                                    Giao hàng tiêu chuẩn (2-3 ngày)
+                                </label>
+                                <span>${formatCurrency(50000)}</span>
+                            </div>
+                            <div class="delivery-option">
+                                <label>
+                                    <input type="radio" name="delivery" value="express">
+                                    Giao hàng nhanh (1 ngày)
+                                </label>
+                                <span>${formatCurrency(100000)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${renderUserInfo()}
+
+                    <button class="checkout-btn" onclick="proceedToCheckout()">
+                        <i class="fas fa-lock" style="margin-right: 8px;"></i>
+                        Thanh toán an toàn
+                        <span style="font-size: 0.8rem; opacity: 0.8; margin-left: 5px;">(VNPay, COD, Banking)</span>
+                    </button>
+                    
+                    <a href="index.html" class="continue-shopping">
+                        <i class="fas fa-arrow-left"></i>
+                        Tiếp tục mua sắm
+                    </a>
+
+                    <div class="security-badges">
+                        <div class="security-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            Thanh toán bảo mật
+                        </div>
+                        <div class="security-badge">
+                            <i class="fas fa-undo"></i>
+                            Đổi trả 7 ngày
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            updateCartCount();
+        }
+
+        // Render user information section
+        function renderUserInfo() {
+            if (!window.TechStoreAuth || !window.TechStoreAuth.isLoggedIn()) {
+                return `
+                    <div class="delivery-info" style="background: #fef3c7; border: 1px solid #fde047; margin: 20px 0;">
+                        <h3 style="color: #a16207;"><i class="fas fa-user-plus"></i> Tài khoản</h3>
+                        <p style="color: #92400e; margin: 10px 0 15px;">
+                            Đăng nhập để thanh toán nhanh chóng và theo dõi đơn hàng dễ dàng
+                        </p>
+                        <a href="login.html" style="
+                            display: inline-block;
+                            background: #d97706;
+                            color: white;
+                            padding: 10px 20px;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                        " onclick="saveCart()">
+                            <i class="fas fa-sign-in-alt"></i> Đăng nhập ngay
+                        </a>
+                    </div>
+                `;
+            }
+
+            const currentUser = window.TechStoreAuth.getCurrentUser();
+            return `
+                <div class="delivery-info" style="background: #f0f9ff; border: 1px solid #bae6fd; margin: 20px 0;">
+                    <h3 style="color: #0369a1;"><i class="fas fa-user-check"></i> Thông tin tài khoản</h3>
+                    <div style="margin: 15px 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="color: #0369a1; font-weight: 500;">Tên:</span>
+                            <span style="color: #1e40af; font-weight: 600;">${currentUser.fullName}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="color: #0369a1; font-weight: 500;">Email:</span>
+                            <span style="color: #1e40af;">${currentUser.email}</span>
+                        </div>
+                        ${currentUser.phone ? `
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="color: #0369a1; font-weight: 500;">SĐT:</span>
+                            <span style="color: #1e40af;">${currentUser.phone}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <a href="profile.html" style="
+                        display: inline-block;
+                        background: #0369a1;
+                        color: white;
+                        padding: 8px 16px;
+                        border-radius: 6px;
+                        text-decoration: none;
+                        font-size: 0.9rem;
+                        font-weight: 500;
+                        transition: all 0.3s ease;
+                    ">
+                        <i class="fas fa-edit"></i> Chỉnh sửa thông tin
+                    </a>
+                </div>
+            `;
+        }
+
+        // Update quantity
+        function updateQuantity(itemId, change) {
+            const item = cartItems.find(item => item.id === itemId);
+            if (item) {
+                const newQuantity = item.quantity + change;
+                if (newQuantity >= 1 && newQuantity <= 10) {
+                    item.quantity = newQuantity;
+                    saveCart(); // Save to localStorage
+                    renderCart();
+                    
+                    // Add animation
+                    const itemElement = document.querySelector(`[data-id="${itemId}"]`);
+                    if (itemElement) {
+                        itemElement.classList.add('quantity-updated');
+                        setTimeout(() => itemElement.classList.remove('quantity-updated'), 300);
+                    }
+                }
+            }
+        }
+
+        // Set quantity directly
+        function setQuantity(itemId, quantity) {
+            const item = cartItems.find(item => item.id === itemId);
+            if (item) {
+                const newQuantity = parseInt(quantity);
+                if (newQuantity >= 1 && newQuantity <= 10) {
+                    item.quantity = newQuantity;
+                    saveCart(); // Save to localStorage
+                    renderCart();
+                }
+            }
+        }
+
+        // Remove item
+        function removeItem(itemId) {
+            if (confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')) {
+                cartItems = cartItems.filter(item => item.id !== itemId);
+                saveCart(); // Save to localStorage
+                renderCart();
+                showNotification('Đã xóa sản phẩm khỏi giỏ hàng', 'success');
+            }
+        }
+
+        // Apply promo code
+        function applyPromoCode() {
+            const promoInput = document.getElementById('promoInput');
+            const promoCode = promoInput.value.trim().toUpperCase();
+            
+            if (currentPromo) {
+                // Remove current promo
+                currentPromo = null;
+                promoInput.value = '';
+                renderCart();
+                return;
+            }
+            
+            if (promoCodes[promoCode]) {
+                const promo = promoCodes[promoCode];
+                const { subtotal } = calculateTotals();
+                
+                // Check minimum order for some promos
+                if (promoCode === 'SAVE500K' && subtotal < 20000000) {
+                    alert('Mã giảm giá này chỉ áp dụng cho đơn hàng từ 20 triệu đồng');
+                    return;
+                }
+                
+                currentPromo = promo;
+                renderCart();
+                alert(`Áp dụng mã giảm giá thành công! ${promo.description}`);
+            } else {
+                alert('Mã giảm giá không hợp lệ hoặc đã hết hạn');
+            }
+        }
+
+        // Update delivery fee based on selected option
+        function updateDeliveryFee() {
+            const deliveryOptions = document.querySelectorAll('input[name="delivery"]');
+            deliveryOptions.forEach(option => {
+                option.addEventListener('change', function() {
+                    deliveryFee = this.value === 'express' ? 100000 : 50000;
+                    renderCart();
+                });
+            });
+        }
+
+        // Proceed to checkout
+        function proceedToCheckout() {
+            const { total } = calculateTotals();
+            
+            if (cartItems.length === 0) {
+                alert('Giỏ hàng trống!');
+                return;
+            }
+            
+            // Check if user is logged in
+            if (!window.TechStoreAuth || !window.TechStoreAuth.isLoggedIn()) {
+                if (confirm('Bạn cần đăng nhập để tiến hành thanh toán. Chuyển đến trang đăng nhập?')) {
+                    // Save cart data before redirecting
+                    saveCart();
+                    window.location.href = 'login.html';
+                }
+                return;
+            }
+            
+            // Get current user info
+            const currentUser = window.TechStoreAuth.getCurrentUser();
+            
+            // Prepare order data
+            const orderData = {
+                items: cartItems,
+                customer: {
+                    name: currentUser.fullName,
+                    email: currentUser.email,
+                    phone: currentUser.phone,
+                    address: currentUser.address
+                },
+                subtotal: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                deliveryFee: deliveryFee,
+                promoCode: currentPromo,
+                total: total,
+                timestamp: new Date().toISOString(),
+                orderId: 'TS' + Date.now()
+            };
+            
+            // Save current order data to localStorage for checkout page
+            localStorage.setItem('checkout_data', JSON.stringify(orderData));
+            
+            // Redirect to checkout page
+            window.location.href = 'checkout.html';
+        }
+        function processVNPayPayment(orderData) {
+            showLoadingOverlay('Đang chuyển hướng đến VNPay...');
+
+            // Track payment initiation
+            if (paymentAnalytics) {
+                paymentAnalytics.trackEvent('payment_initiated', {
+                    method: 'vnpay',
+                    orderId: orderData.orderId,
+                    amount: orderData.total
+                });
+            }
+
+            // Create order in system
+            if (orderManager) {
+                orderManager.createOrder(orderData);
+            }
+
+            // Simulate VNPay integration (in real app, this would call your backend)
+            setTimeout(() => {
+                hideLoadingOverlay();
+                
+                if (vnpayPayment) {
+                    // In production, redirect to VNPay
+                    // const paymentUrl = vnpayPayment.createPaymentUrl(orderData);
+                    // window.location.href = paymentUrl;
+                    
+                    // For demo, show simulation
+                    showVNPaySimulation(orderData);
+                } else {
+                    showVNPaySimulation(orderData);
+                }
+            }, 1500);
+        }
+
+        // Show VNPay simulation (for demo purposes)
+        function showVNPaySimulation(orderData) {
+            const modal = document.createElement('div');
+            modal.className = 'vnpay-simulation';
+            modal.innerHTML = `
+                <div class="modal-overlay">
+                    <div class="vnpay-content">
+                        <div class="vnpay-header">
+                            <img src="https://vnpay.vn/s1/statics.vnpay.vn/2023/9/06ncktiwd6dc1694418196384.png" alt="VNPay" style="height: 50px;">
+                            <h3>VNPay Payment Gateway (Sandbox)</h3>
+                        </div>
+                        
+                        <div class="payment-details">
+                            <h4>Thông tin thanh toán</h4>
+                            <div class="detail-row">
+                                <span>Mã đơn hàng:</span>
+                                <strong>${orderData.orderId}</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Số tiền:</span>
+                                <strong>${formatCurrency(orderData.total)}</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Nội dung:</span>
+                                <span>Thanh toán đơn hàng TechStore</span>
+                            </div>
+                        </div>
+
+                        <div class="vnpay-actions">
+                            <button class="btn-success" onclick="simulateVNPaySuccess()">
+                                <i class="fas fa-check"></i>
+                                Thanh toán thành công
+                            </button>
+                            <button class="btn-cancel" onclick="simulateVNPayCancel()">
+                                <i class="fas fa-times"></i>
+                                Hủy thanh toán
+                            </button>
+                        </div>
+                        
+                        <p class="simulation-note">
+                            <i class="fas fa-info-circle"></i>
+                            Đây là môi trường sandbox demo. Trong thực tế, bạn sẽ được chuyển hướng đến trang thanh toán VNPay.
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            // Add VNPay simulation styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .vnpay-simulation {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 10001;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    animation: fadeIn 0.3s ease;
+                }
+
+                .vnpay-content {
+                    position: relative;
+                    background: white;
+                    border-radius: 15px;
+                    width: 90%;
+                    max-width: 500px;
+                    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+                    overflow: hidden;
+                }
+
+                .vnpay-header {
+                    background: linear-gradient(135deg, #1e40af, #3b82f6);
+                    color: white;
+                    padding: 30px;
+                    text-align: center;
+                }
+
+                .vnpay-header h3 {
+                    margin: 15px 0 0;
+                    font-size: 1.3rem;
+                }
+
+                .payment-details {
+                    padding: 30px;
+                }
+
+                .payment-details h4 {
+                    margin: 0 0 20px;
+                    color: #1a1a1a;
+                    font-size: 1.2rem;
+                }
+
+                .detail-row {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 15px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid #f1f5f9;
+                }
+
+                .vnpay-actions {
+                    padding: 0 30px 30px;
+                    display: flex;
+                    gap: 15px;
+                }
+
+                .btn-success {
+                    flex: 1;
+                    padding: 15px;
+                    background: #10b981;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                }
+
+                .btn-success:hover {
+                    background: #059669;
+                    transform: translateY(-2px);
+                }
+
+                .simulation-note {
+                    background: #f0f9ff;
+                    color: #0369a1;
+                    padding: 15px 20px;
+                    margin: 0;
+                    font-size: 0.9rem;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                }
+            `;
+
+            document.head.appendChild(style);
+            document.body.appendChild(modal);
+        }
+
+        // Simulate VNPay success
+        function simulateVNPaySuccess() {
+            const modal = document.querySelector('.vnpay-simulation');
+            if (modal) modal.remove();
+
+            // Clear cart after successful payment
+            cartItems = [];
+            saveCart();
+
+            showSuccessMessage('Thanh toán thành công! Đơn hàng của bạn đã được xác nhận.');
+        }
+
+        // Simulate VNPay cancel
+        function simulateVNPayCancel() {
+            const modal = document.querySelector('.vnpay-simulation');
+            if (modal) modal.remove();
+
+            showNotification('Thanh toán đã bị hủy', 'error');
+        }
+
+        // Process COD payment
+        function processCODPayment(orderData) {
+            showLoadingOverlay('Đang xử lý đơn hàng...');
+
+            setTimeout(() => {
+                hideLoadingOverlay();
+                
+                // Store order for tracking
+                saveOrderToHistory(orderData);
+                
+                // Clear cart
+                cartItems = [];
+                saveCart();
+
+                showSuccessMessage('Đơn hàng đã được tạo thành công! Bạn sẽ thanh toán khi nhận hàng.');
+            }, 2000);
+        }
+
+        // Process bank transfer
+        function processBankTransfer(orderData) {
+            showLoadingOverlay('Đang tạo thông tin chuyển khoản...');
+
+            setTimeout(() => {
+                hideLoadingOverlay();
+                showBankTransferInfo(orderData);
+            }, 1500);
+        }
+
+        // Show bank transfer information
+        function showBankTransferInfo(orderData) {
+            const modal = document.createElement('div');
+            modal.className = 'bank-transfer-modal';
+            modal.innerHTML = `
+                <div class="modal-overlay">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-university"></i> Thông tin chuyển khoản</h3>
+                            <button class="close-modal" onclick="closeBankModal()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="bank-info">
+                            <div class="bank-selection">
+                                <h4>Chọn ngân hàng để chuyển khoản:</h4>
+                                <div class="bank-options">
+                                    <div class="bank-option active" data-bank="techcombank">
+                                        <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/02/Logo-Techcombank-TCB.png" alt="Techcombank" style="height: 30px;">
+                                        <span>Techcombank</span>
+                                    </div>
+                                    <div class="bank-option" data-bank="vietcombank">
+                                        <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/02/Logo-Vietcombank-VCB.png" alt="Vietcombank" style="height: 30px;">
+                                        <span>Vietcombank</span>
+                                    </div>
+                                    <div class="bank-option" data-bank="bidv">
+                                        <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/02/Logo-BIDV.png" alt="BIDV" style="height: 30px;">
+                                        <span>BIDV</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bank-details">
+                                <h4 id="selectedBankName">Ngân hàng: Techcombank</h4>
+                                <div class="info-row">
+                                    <span>Số tài khoản:</span>
+                                    <strong id="accountNumber">19036969696969</strong>
+                                    <button onclick="copyToClipboard(document.getElementById('accountNumber').textContent)" class="copy-btn">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <div class="info-row">
+                                    <span>Chủ tài khoản:</span>
+                                    <strong id="accountName">CONG TY TNHH TECHSTORE</strong>
+                                </div>
+                                <div class="info-row">
+                                    <span>Số tiền:</span>
+                                    <strong id="transferAmount">${formatCurrency(orderData.total)}</strong>
+                                    <button onclick="copyToClipboard('${orderData.total}')" class="copy-btn">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <div class="info-row">
+                                    <span>Nội dung CK:</span>
+                                    <strong id="transferContent">${orderData.orderId} ${orderData.customer.name}</strong>
+                                    <button onclick="copyToClipboard('${orderData.orderId} ${orderData.customer.name}')" class="copy-btn">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="qr-code">
+                                <h5>Quét mã QR để chuyển khoản</h5>
+                                <div class="qr-container">
+                                    <img id="qrCodeImage" src="" alt="QR Code" style="width: 200px; height: 200px; border: 1px solid #e1e5e9; border-radius: 8px;">
+                                    <div class="qr-loading" id="qrLoading">
+                                        <div class="spinner"></div>
+                                        <p>Đang tạo mã QR...</p>
+                                    </div>
+                                </div>
+                                <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">
+                                    Quét mã QR bằng app ngân hàng để chuyển khoản nhanh chóng
+                                </p>
+                                <div class="qr-actions">
+                                    <button onclick="downloadQRCode()" class="qr-btn">
+                                        <i class="fas fa-download"></i>
+                                        Tải QR Code
+                                    </button>
+                                    <button onclick="refreshQRCode()" class="qr-btn">
+                                        <i class="fas fa-refresh"></i>
+                                        Làm mới
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bank-note">
+                            <p><strong>Lưu ý:</strong></p>
+                            <ul>
+                                <li>Vui lòng chuyển khoản đúng số tiền và nội dung</li>
+                                <li>Đơn hàng sẽ được xử lý sau khi nhận được thanh toán</li>
+                                <li>Liên hệ hotline 1900-1234 nếu cần hỗ trợ</li>
+                            </ul>
+                        </div>
+
+                        <div class="modal-actions">
+                            <button class="btn-confirm" onclick="confirmBankTransfer('${orderData.orderId}')">
+                                Tôi đã chuyển khoản
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+
+            document.body.appendChild(modal);
+
+            // Generate QR code automatically
+            generateBankQRCode(orderData);
+
+            // Add bank selection handlers
+            setupBankSelection(orderData);
+        }
+
+        // Setup bank selection functionality
+        function setupBankSelection(orderData) {
+            const bankOptions = document.querySelectorAll('.bank-option');
+            
+            bankOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    bankOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Update bank details
+                    updateBankDetails(this.dataset.bank, orderData);
+                    
+                    // Regenerate QR code for new bank
+                    generateBankQRCode(orderData, this.dataset.bank);
+                });
+            });
+        }
+
+        // Update bank details based on selected bank
+        function updateBankDetails(bankType, orderData) {
+            const banks = {
+                techcombank: {
+                    name: 'Techcombank',
+                    code: '970407',
+                    account: '19036969696969',
+                    owner: 'CONG TY TNHH TECHSTORE'
+                },
+                vietcombank: {
+                    name: 'Vietcombank', 
+                    code: '970436',
+                    account: '0123456789',
+                    owner: 'CONG TY TNHH TECHSTORE'
+                },
+                bidv: {
+                    name: 'BIDV',
+                    code: '970418', 
+                    account: '12345678901',
+                    owner: 'CONG TY TNHH TECHSTORE'
+                }
+            };
+
+            const selectedBank = banks[bankType];
+            if (selectedBank) {
+                document.getElementById('selectedBankName').textContent = `Ngân hàng: ${selectedBank.name}`;
+                document.getElementById('accountNumber').textContent = selectedBank.account;
+                document.getElementById('accountName').textContent = selectedBank.owner;
+                
+                // Update copy buttons with new values
+                const copyButtons = document.querySelectorAll('.copy-btn');
+                copyButtons[0].onclick = () => copyToClipboard(selectedBank.account);
+                copyButtons[1].onclick = () => copyToClipboard(orderData.total.toString());
+                copyButtons[2].onclick = () => copyToClipboard(`${orderData.orderId} ${orderData.customer.name}`);
+            }
+        }
+
+        // Generate QR Code for bank transfer
+        function generateBankQRCode(orderData, bankType = 'techcombank') {
+            const qrImage = document.getElementById('qrCodeImage');
+            const qrLoading = document.getElementById('qrLoading');
+            
+            // Reset QR display
+            qrImage.classList.remove('loaded');
+            qrLoading.classList.remove('hidden');
+            
+            // Bank details
+            const banks = {
+                techcombank: {
+                    bankCode: '970407',
+                    accountNumber: '19036969696969',
+                    accountName: 'CONG TY TNHH TECHSTORE'
+                },
+                vietcombank: {
+                    bankCode: '970436',
+                    accountNumber: '0123456789', 
+                    accountName: 'CONG TY TNHH TECHSTORE'
+                },
+                bidv: {
+                    bankCode: '970418',
+                    accountNumber: '12345678901',
+                    accountName: 'CONG TY TNHH TECHSTORE'
+                }
+            };
+
+            const bankInfo = {
+                ...banks[bankType],
+                amount: orderData.total,
+                description: `${orderData.orderId} ${orderData.customer.name}`
+            };
+
+            // Create VietQR compatible string
+            const qrContent = createVietQRString(bankInfo);
+            
+            // Store current order for QR actions
+            window.currentBankTransfer = { orderData, bankType, bankInfo };
+            
+            // Try multiple QR generation services
+            const qrServices = [
+                `https://img.vietqr.io/image/${bankInfo.bankCode}-${bankInfo.accountNumber}-compact2.jpg?amount=${bankInfo.amount}&addInfo=${encodeURIComponent(bankInfo.description)}&accountName=${encodeURIComponent(bankInfo.accountName)}`,
+                `https://quickchart.io/qr?text=${encodeURIComponent(qrContent)}&size=200&format=png`,
+                `https://api.qrserver.com/v1/create-qr-code/?size=200x200&format=png&data=${encodeURIComponent(qrContent)}`
+            ];
+            
+            tryLoadQR(qrServices, 0, qrImage, qrLoading, bankInfo, orderData);
+        }
+
+        // Try loading QR from different services
+        function tryLoadQR(services, index, qrImage, qrLoading, bankInfo, orderData) {
+            if (index >= services.length) {
+                // All services failed, show manual fallback
+                showQRFallback(qrLoading, bankInfo, orderData);
+                return;
+            }
+
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            
+            img.onload = function() {
+                qrImage.src = img.src;
+                qrImage.classList.add('loaded');
+                qrLoading.classList.add('hidden');
+            };
+            
+            img.onerror = function() {
+                // Try next service
+                tryLoadQR(services, index + 1, qrImage, qrLoading, bankInfo, orderData);
+            };
+            
+            // Add timeout for slow services
+            setTimeout(() => {
+                if (!qrImage.classList.contains('loaded')) {
+                    img.src = ''; // Cancel current load
+                    tryLoadQR(services, index + 1, qrImage, qrLoading, bankInfo, orderData);
+                }
+            }, 5000);
+            
+            img.src = services[index];
+        }
+
+        // Show fallback when QR generation fails
+        function showQRFallback(qrLoading, bankInfo, orderData) {
+            qrLoading.innerHTML = `
+                <i class="fas fa-qrcode" style="font-size: 2.5rem; color: #ccc; margin-bottom: 15px;"></i>
+                <p style="font-size: 0.9rem; color: #999; text-align: center; line-height: 1.4;">
+                    <strong>Không thể tạo mã QR</strong><br>
+                    Vui lòng chuyển khoản thủ công<br>
+                    theo thông tin bên trái
+                </p>
+                <button onclick="retryQRGeneration()" style="
+                    margin-top: 10px;
+                    padding: 8px 15px;
+                    background: #667eea;
+                    color: white;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 0.9rem;
+                ">
+                    <i class="fas fa-refresh"></i> Thử lại
+                </button>
+            `;
+        }
+
+        // QR Action functions
+        function downloadQRCode() {
+            const qrImage = document.getElementById('qrCodeImage');
+            if (qrImage && qrImage.src && qrImage.classList.contains('loaded')) {
+                const link = document.createElement('a');
+                link.download = `QR_ChuyenKhoan_${window.currentBankTransfer?.orderData?.orderId || 'TechStore'}.png`;
+                link.href = qrImage.src;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification('Đã tải xuống mã QR!', 'success');
+            } else {
+                showNotification('Chưa có mã QR để tải xuống!', 'error');
+            }
+        }
+
+        function refreshQRCode() {
+            if (window.currentBankTransfer) {
+                const { orderData, bankType } = window.currentBankTransfer;
+                generateBankQRCode(orderData, bankType);
+                showNotification('Đang làm mới mã QR...', 'success');
+            }
+        }
+
+        function retryQRGeneration() {
+            refreshQRCode();
+        }
+
+        // Create VietQR compatible string
+        function createVietQRString(bankInfo) {
+            // Enhanced VietQR format for better compatibility
+            // Using standard format that most Vietnamese banking apps can read
+            
+            // Method 1: VietQR standard format
+            const vietQRFormat = `https://api.vietqr.io/image/${bankInfo.bankCode}-${bankInfo.accountNumber}-compact.jpg?amount=${bankInfo.amount}&addInfo=${encodeURIComponent(bankInfo.description)}&accountName=${encodeURIComponent(bankInfo.accountName)}`;
+            
+            // Method 2: Simple text format for fallback
+            const simpleFormat = [
+                `STK: ${bankInfo.accountNumber}`,
+                `NH: ${bankInfo.bankCode}`,
+                `Ten: ${bankInfo.accountName}`,
+                `ST: ${bankInfo.amount.toLocaleString('vi-VN')} VND`,
+                `ND: ${bankInfo.description}`
+            ].join('\n');
+            
+            // Method 3: Bank transfer URL format (most compatible)
+            const bankTransferFormat = `BANK:${bankInfo.bankCode}|ACC:${bankInfo.accountNumber}|AMOUNT:${bankInfo.amount}|DESC:${bankInfo.description}|NAME:${bankInfo.accountName}`;
+            
+            // Return the most compatible format
+            return bankTransferFormat;
+        }
+
+        // Enhanced VietQR generation with better error handling
+        function generateVietQRUrl(bankInfo) {
+            // Official VietQR API format (if available)
+            const vietQRApi = `https://img.vietqr.io/image/${bankInfo.bankCode}-${bankInfo.accountNumber}-compact2.jpg?amount=${bankInfo.amount}&addInfo=${encodeURIComponent(bankInfo.description)}&accountName=${encodeURIComponent(bankInfo.accountName)}`;
+            
+            return vietQRApi;
+        }
+
+        // Add real-time QR preview
+        function previewQRContent() {
+            if (window.currentBankTransfer) {
+                const { bankInfo } = window.currentBankTransfer;
+                const content = createVietQRString(bankInfo);
+                
+                alert(`Nội dung QR Code:\n\n${content.replace(/\|/g, '\n').replace(/BANK:|ACC:|AMOUNT:|DESC:|NAME:/g, '')}`);
+            }
+        }        // Close bank modal
+        function closeBankModal() {
+            const modal = document.querySelector('.bank-transfer-modal');
+            if (modal) modal.remove();
+        }
+
+        // Confirm bank transfer
+        function confirmBankTransfer(orderId) {
+            closeBankModal();
+            
+            // Store order for tracking
+            const orderData = JSON.parse(localStorage.getItem('current_order'));
+            saveOrderToHistory(orderData);
+            
+            // Clear cart
+            cartItems = [];
+            saveCart();
+
+            showSuccessMessage('Cảm ơn bạn! Chúng tôi sẽ xác nhận thanh toán trong vòng 24h.');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Đã sao chép vào clipboard!', 'success');
+            });
+        }
+
+        // Save order to history
+        function saveOrderToHistory(orderData) {
+            let orderHistory = JSON.parse(localStorage.getItem('order_history') || '[]');
+            orderHistory.unshift(orderData);
+            localStorage.setItem('order_history', JSON.stringify(orderHistory));
+        }
+
+        // Show loading overlay
+        function showLoadingOverlay(message) {
+            const overlay = document.createElement('div');
+            overlay.className = 'loading-overlay';
+            overlay.innerHTML = `
+                <div class="loading-content">
+                    <div class="spinner-large"></div>
+                    <p>${message}</p>
+                </div>
+            `;
+
+            const style = document.createElement('style');
+            style.textContent = `
+                .loading-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(255, 255, 255, 0.95);
+                    backdrop-filter: blur(5px);
+                    z-index: 10002;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .loading-content {
+                    text-align: center;
+                }
+
+                .spinner-large {
+                    width: 50px;
+                    height: 50px;
+                    border: 4px solid #f3f3f3;
+                    border-top: 4px solid #667eea;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 20px;
+                }
+
+                .loading-content p {
+                    color: #667eea;
+                    font-size: 1.1rem;
+                    font-weight: 500;
+                }
+            `;
+
+            document.head.appendChild(style);
+            document.body.appendChild(overlay);
+        }
+
+        // Hide loading overlay
+        function hideLoadingOverlay() {
+            const overlay = document.querySelector('.loading-overlay');
+            if (overlay) overlay.remove();
+        }
+
+        // Show success message
+        function showSuccessMessage(message) {
+            const modal = document.createElement('div');
+            modal.className = 'success-modal';
+            modal.innerHTML = `
+                <div class="modal-overlay">
+                    <div class="success-content">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Thành công!</h3>
+                        <p>${message}</p>
+                        <div class="success-actions">
+                            <button class="btn-home" onclick="goHome()">
+                                <i class="fas fa-home"></i>
+                                Về trang chủ
+                            </button>
+                            <button class="btn-orders" onclick="viewOrders()">
+                                <i class="fas fa-list"></i>
+                                Xem đơn hàng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const style = document.createElement('style');
+            style.textContent = `
+                .success-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 10003;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    animation: fadeIn 0.3s ease;
+                }
+
+                .success-content {
+                    background: white;
+                    border-radius: 20px;
+                    padding: 50px 40px;
+                    text-align: center;
+                    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+                    max-width: 400px;
+                    width: 90%;
+                }
+
+                .success-icon {
+                    font-size: 4rem;
+                    color: #10b981;
+                    margin-bottom: 20px;
+                }
+
+                .success-content h3 {
+                    margin: 0 0 15px;
+                    color: #1a1a1a;
+                    font-size: 1.8rem;
+                }
+
+                .success-content p {
+                    margin: 0 0 30px;
+                    color: #666;
+                    line-height: 1.6;
+                }
+
+                .success-actions {
+                    display: flex;
+                    gap: 15px;
+                    justify-content: center;
+                }
+
+                .btn-home,
+                .btn-orders {
+                    padding: 12px 20px;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                .btn-home {
+                    background: #667eea;
+                    color: white;
+                }
+
+                .btn-orders {
+                    background: #f1f5f9;
+                    color: #667eea;
+                }
+
+                .btn-home:hover,
+                .btn-orders:hover {
+                    transform: translateY(-2px);
+                }
+            `;
+
+            document.head.appendChild(style);
+            document.body.appendChild(modal);
+        }
+
+        // Navigation functions
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        function viewOrders() {
+            // In a real app, this would go to orders page
+            alert('Tính năng xem đơn hàng sẽ sớm có mặt!');
+            goHome();
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.cart-notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `cart-notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Add styles
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : '#ef4444'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                max-width: 350px;
+            `;
+            
+            const contentStyle = `
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 500;
+            `;
+            notification.querySelector('.notification-content').style.cssText = contentStyle;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after delay
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Load cart from localStorage using TechStoreCart
+        function loadCart() {
+            cartItems = TechStoreCart.getCart();
+        }
+
+        // Save cart to localStorage using TechStoreCart
+        function saveCart() {
+            TechStoreCart.saveCart(cartItems);
+        }
+
+        // Check for VNPay return (updated)
+        function checkVNPayReturn() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('payment') === 'return') {
+                
+                if (vnpayPayment) {
+                    const result = vnpayPayment.processReturn(urlParams);
+                    
+                    if (result.success) {
+                        // Payment successful
+                        if (paymentAnalytics) {
+                            paymentAnalytics.trackEvent('payment_success', {
+                                method: 'vnpay',
+                                orderId: result.orderId,
+                                amount: result.amount,
+                                bankCode: result.bankCode
+                            });
+                        }
+                        
+                        if (orderManager) {
+                            orderManager.updateOrderStatus(result.orderId, 'processing', 'completed');
+                        }
+                        
+                        cartItems = [];
+                        saveCart();
+                        showSuccessMessage('Thanh toán VNPay thành công! Đơn hàng đã được xác nhận.');
+                    } else {
+                        // Payment failed or cancelled
+                        if (paymentAnalytics) {
+                            paymentAnalytics.trackEvent('payment_failed', {
+                                method: 'vnpay',
+                                orderId: result.orderId,
+                                responseCode: result.responseCode,
+                                message: result.message
+                            });
+                        }
+                        
+                        showNotification(`Thanh toán VNPay không thành công: ${result.message}`, 'error');
+                    }
+                } else {
+                    // Fallback for when payment.js not loaded
+                    const responseCode = urlParams.get('vnp_ResponseCode');
+                    if (responseCode === '00') {
+                        cartItems = [];
+                        saveCart();
+                        showSuccessMessage('Thanh toán VNPay thành công! Đơn hàng đã được xác nhận.');
+                    } else {
+                        showNotification('Thanh toán VNPay không thành công. Vui lòng thử lại.', 'error');
+                    }
+                }
+                
+                // Clean URL
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+            }
+        }
+
+        // Initialize page (updated)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize payment system first
+            initializePaymentSystem();
+            
+            loadCart(); // Load cart from localStorage
+            checkVNPayReturn(); // Check for VNPay return
+            renderCart();
+            
+            // Add event listeners for delivery options
+            setTimeout(updateDeliveryFee, 100);
+            
+            // Add keyboard support for promo code
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && document.activeElement.id === 'promoInput') {
+                    applyPromoCode();
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
