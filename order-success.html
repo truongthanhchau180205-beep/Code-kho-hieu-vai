@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Hàng Thành Công - TechStore</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .success-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .success-card {
+            background: white;
+            border-radius: 25px;
+            padding: 60px 50px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6, #f59e0b);
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: successPulse 2s ease-in-out infinite;
+        }
+
+        .success-icon i {
+            font-size: 3.5rem;
+            color: white;
+        }
+
+        .success-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .success-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .order-info {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .order-info h3 {
+            font-size: 1.3rem;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .payment-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .payment-status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .payment-status.completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .next-steps {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .next-steps h4 {
+            color: #0369a1;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .next-steps ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #0369a1;
+        }
+
+        .next-steps li {
+            margin-bottom: 8px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-action {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #667eea;
+            border: 2px solid #e1e5e9;
+        }
+
+        .btn-secondary:hover {
+            background: #e1e5e9;
+            border-color: #667eea;
+        }
+
+        .contact-info {
+            border-top: 1px solid #e1e5e9;
+            padding-top: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-info h4 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+        }
+
+        .contact-method i {
+            color: #667eea;
+            width: 20px;
+        }
+
+        .countdown {
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        @keyframes successPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(16, 185, 129, 0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-card > * {
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: calc(var(--delay, 0) * 0.1s);
+        }
+
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .success-title {
+                font-size: 2rem;
+            }
+
+            .success-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .order-info,
+            .next-steps {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Load shared cart functionality -->
+    <script src="js/shared.js"></script>
+
+    <div class="success-container">
+        <div class="success-card">
+            <div class="success-icon" style="--delay: 1">
+                <i class="fas fa-check"></i>
+            </div>
+            
+            <h1 class="success-title" style="--delay: 2">Đặt hàng thành công!</h1>
+            <p class="success-subtitle" style="--delay: 3">
+                Cảm ơn bạn đã mua hàng tại TechStore. Chúng tôi sẽ xử lý đơn hàng của bạn trong thời gian sớm nhất.
+            </p>
+
+            <div class="order-info" style="--delay: 4">
+                <h3>
+                    <i class="fas fa-file-invoice"></i>
+                    Thông tin đơn hàng
+                </h3>
+                <div class="info-row">
+                    <span class="info-label">Mã đơn hàng:</span>
+                    <span class="info-value" id="orderIdDisplay">...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Ngày đặt:</span>
+                    <span class="info-value" id="orderDate">...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Phương thức thanh toán:</span>
+                    <span class="info-value" id="paymentMethod">...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Trạng thái thanh toán:</span>
+                    <span class="payment-status" id="paymentStatus">...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Tổng tiền:</span>
+                    <span class="info-value" id="totalAmount">...</span>
+                </div>
+            </div>
+
+            <div class="next-steps" style="--delay: 5" id="nextSteps">
+                <!-- Content will be filled by JavaScript -->
+            </div>
+
+            <div class="action-buttons" style="--delay: 6">
+                <a href="index.html" class="btn-action btn-primary">
+                    <i class="fas fa-home"></i>
+                    Về trang chủ
+                </a>
+                <a href="#" class="btn-action btn-secondary" onclick="viewOrderDetails()">
+                    <i class="fas fa-receipt"></i>
+                    Xem chi tiết đơn hàng
+                </a>
+            </div>
+
+            <div class="contact-info" style="--delay: 7">
+                <h4>Cần hỗ trợ? Liên hệ với chúng tôi</h4>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <i class="fas fa-phone"></i>
+                        <span>Hotline: 1900-1234</span>
+                    </div>
+                    <div class="contact-method">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email: support@techstore.vn</span>
+                    </div>
+                    <div class="contact-method">
+                        <i class="fas fa-comment"></i>
+                        <span>Chat trực tuyến: 8:00 - 22:00</span>
+                    </div>
+                    <div class="contact-method">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span><a href="contact.html" style="color: inherit; text-decoration: none;">Xem địa chỉ cửa hàng</a></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="countdown" style="--delay: 8">
+                <i class="fas fa-clock"></i>
+                Tự động chuyển về trang chủ sau <span id="countdownTimer">15</span> giây
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get order information from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId');
+        const paymentMethod = urlParams.get('method');
+
+        // Payment method display names
+        const paymentMethodNames = {
+            'vnpay': 'VNPay',
+            'cod': 'Thanh toán khi nhận hàng (COD)',
+            'bank': 'Chuyển khoản ngân hàng'
+        };
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+
+        // Load and display order information
+        function loadOrderInfo() {
+            // Get order from history
+            let orderHistory = JSON.parse(localStorage.getItem('order_history') || '[]');
+            let orderData = orderHistory.find(order => order.orderId === orderId);
+
+            if (!orderData && orderId) {
+                // Create basic order data if not found
+                orderData = {
+                    orderId: orderId,
+                    timestamp: new Date().toISOString(),
+                    paymentMethod: paymentMethod,
+                    total: 0
+                };
+            }
+
+            if (orderData) {
+                // Display order information
+                document.getElementById('orderIdDisplay').textContent = orderData.orderId;
+                document.getElementById('orderDate').textContent = new Date(orderData.timestamp).toLocaleString('vi-VN');
+                document.getElementById('paymentMethod').textContent = paymentMethodNames[paymentMethod] || 'Không xác định';
+                document.getElementById('totalAmount').textContent = formatCurrency(orderData.total || 0);
+
+                // Set payment status
+                const paymentStatusEl = document.getElementById('paymentStatus');
+                if (paymentMethod === 'vnpay') {
+                    paymentStatusEl.textContent = 'Đã thanh toán';
+                    paymentStatusEl.className = 'payment-status completed';
+                } else {
+                    paymentStatusEl.textContent = 'Chờ xử lý';
+                    paymentStatusEl.className = 'payment-status pending';
+                }
+
+                // Set next steps based on payment method
+                setNextSteps(paymentMethod);
+            } else {
+                // Default values if no order data
+                document.getElementById('orderIdDisplay').textContent = orderId || 'Không xác định';
+                document.getElementById('orderDate').textContent = new Date().toLocaleString('vi-VN');
+                document.getElementById('paymentMethod').textContent = paymentMethodNames[paymentMethod] || 'Không xác định';
+                document.getElementById('totalAmount').textContent = 'Liên hệ để biết thêm chi tiết';
+                
+                const paymentStatusEl = document.getElementById('paymentStatus');
+                paymentStatusEl.textContent = 'Chờ xử lý';
+                paymentStatusEl.className = 'payment-status pending';
+                
+                setNextSteps(paymentMethod);
+            }
+        }
+
+        // Set next steps based on payment method
+        function setNextSteps(method) {
+            const nextStepsEl = document.getElementById('nextSteps');
+            
+            let content = '<h4><i class="fas fa-list-check"></i> Các bước tiếp theo</h4><ul>';
+            
+            switch (method) {
+                case 'vnpay':
+                    content += `
+                        <li>Chúng tôi đã nhận được thanh toán của bạn</li>
+                        <li>Đơn hàng sẽ được chuẩn bị và đóng gói trong 24h</li>
+                        <li>Bạn sẽ nhận được thông báo khi đơn hàng được giao cho đơn vị vận chuyển</li>
+                        <li>Thời gian giao hàng dự kiến: 2-5 ngày làm việc</li>
+                    `;
+                    break;
+                case 'cod':
+                    content += `
+                        <li>Đơn hàng đã được xác nhận và sẽ được chuẩn bị trong 24h</li>
+                        <li>Bạn sẽ nhận được cuộc gọi xác nhận từ nhân viên giao hàng</li>
+                        <li>Vui lòng chuẩn bị tiền mặt khi nhận hàng</li>
+                        <li>Thời gian giao hàng dự kiến: 2-5 ngày làm việc</li>
+                    `;
+                    break;
+                case 'bank':
+                    content += `
+                        <li>Chúng tôi sẽ xác nhận thanh toán trong vòng 24h</li>
+                        <li>Sau khi xác nhận thanh toán, đơn hàng sẽ được chuẩn bị</li>
+                        <li>Bạn sẽ nhận được email/SMS khi thanh toán được xác nhận</li>
+                        <li>Thời gian giao hàng: 3-7 ngày làm việc (sau khi xác nhận thanh toán)</li>
+                    `;
+                    break;
+                default:
+                    content += `
+                        <li>Đơn hàng đã được ghi nhận và sẽ được xử lý sớm nhất</li>
+                        <li>Chúng tôi sẽ liên hệ với bạn để xác nhận chi tiết</li>
+                        <li>Vui lòng kiểm tra email hoặc điện thoại thường xuyên</li>
+                    `;
+            }
+            
+            content += '</ul>';
+            nextStepsEl.innerHTML = content;
+        }
+
+        // View order details
+        function viewOrderDetails() {
+            alert('Tính năng xem chi tiết đơn hàng sẽ sớm có mặt!\n\nBạn có thể liên hệ hotline 1900-1234 để biết thêm thông tin về đơn hàng.');
+        }
+
+        // Countdown timer
+        function startCountdown() {
+            let seconds = 15;
+            const countdownEl = document.getElementById('countdownTimer');
+            
+            const timer = setInterval(() => {
+                seconds--;
+                countdownEl.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    window.location.href = 'index.html';
+                }
+            }, 1000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrderInfo();
+            startCountdown();
+            
+            // Update cart count (should be 0 after successful order)
+            if (window.TechStoreCart) {
+                TechStoreCart.updateCartCount();
+            }
+        });
+    </script>
+</body>
+</html>
